@@ -308,31 +308,28 @@ class VideoController extends Controller {
         return $this->json($data);
     }
 
-    
-     public function searchAction(Request $request, $search = null) {
+    public function searchAction(Request $request, $search = null) {
         $em = $this->getDoctrine()->getManager();
 
-        if($search !=null){
-             $dql = "SELECT v FROM BackendBundle:Video v "
-                     . "WHERE v.title LIKE '%$search%' OR "
-                     . "v.description LIKE '%$search%' "
-                     . "ORDER BY v.id DESC";
+        if ($search != null) {
+            $dql = "SELECT v FROM BackendBundle:Video v "
+                    . "WHERE v.title LIKE :search OR "
+                    . "v.description LIKE :search ORDER BY v.id DESC";
+            $query = $em->createQuery($dql)
+                    ->setParameter("search", "%$search%");
+        } else {
+            $dql = "SELECT v FROM BackendBundle:Video v ORDER BY v.id DESC";
+            $query = $em->createQuery($dql);
         }
-        else{
-             $dql = "SELECT v FROM BackendBundle:Video v ORDER BY v.id DESC";
-        }
-       
 
-        
-        $query = $em->createQuery($dql);
+
         $page = $request->query->getInt("page", 1);
-
         $paginator = $this->get("knp_paginator");
         $items_per_page = 6;
 
-
         $pagination = $paginator->paginate($query, $page, $items_per_page);
         $total_items_count = $pagination->getTotalItemCount();
+
         $data = array(
             "status" => "success",
             "total_items_count" => $total_items_count,
@@ -341,9 +338,10 @@ class VideoController extends Controller {
             "total_pages" => ceil($total_items_count / $items_per_page),
             "data" => $pagination
         );
+
         return $this->json($data);
     }
-    
+
     public function pruebasAction() {
         echo "Hola controlador video";
         die();
