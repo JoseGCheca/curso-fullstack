@@ -253,36 +253,59 @@ class VideoController extends Controller {
 
         $query = $em->createQuery($dql);
         $page = $request->query->getInt("page", 1);
-        
+
         $paginator = $this->get("knp_paginator");
         $items_per_page = 6;
-        
-        
+
+
         $pagination = $paginator->paginate($query, $page, $items_per_page);
         $total_items_count = $pagination->getTotalItemCount();
         $data = array(
             "status" => "success",
-            "total_items_count" =>$total_items_count,
+            "total_items_count" => $total_items_count,
             "page_actual" => $page,
             "items_per_page" => $items_per_page,
-            "total_pages" => ceil($total_items_count/$items_per_page),
+            "total_pages" => ceil($total_items_count / $items_per_page),
             "data" => $pagination
         );
         return $this->json($data);
     }
-    
-    public function lastsVideosAction(Request $request){
+
+    public function lastsVideosAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = "SELECT v FROM BackendBundle:Video v ORDER BY v.createdAt DESC";
 
         $query = $em->createQuery($dql)->setMaxResults(5);
         $videos = $query->getResult();
-        
-          $data = array(
+
+        $data = array(
             "status" => "success",
             "data" => $videos
         );
-         return $this->json($data);
+        return $this->json($data);
+    }
+
+    public function videoAction(Request $request, $id = null) {
+
+        $em = $this->getDoctrine()->getManager();
+        $video = $em->getRepository("BackendBundle:Video")->findOneBy(
+                array(
+                    "id" => $id,
+        ));
+
+        if ($video) {
+            $data = array();
+            $data["status"] = 'success';
+            $data["code"] = 200;
+            $data["data"] = $video;
+        } else {
+            $data = array(
+                "status" => "error",
+                "code" => 400,
+                "msg" => "video doesnt exist"
+            );
+        }
+        return $this->json($data);
     }
 
     public function pruebasAction() {
