@@ -133,7 +133,7 @@ class VideoController extends Controller {
                             "msg" => "video updated success"
                         );
                     } else {
-                         $data = array(
+                        $data = array(
                             "status" => "succes",
                             "code" => 400,
                             "msg" => "video updated error, you not owner"
@@ -151,6 +151,89 @@ class VideoController extends Controller {
                     "status" => "error",
                     "code" => 400,
                     "msg" => "Video not updated, params failed"
+                );
+            }
+        } else {
+            $data = array(
+                "status" => "error",
+                "code" => 400,
+                "msg" => "Authorization not valid"
+            );
+        }
+        return $this->json($data);
+    }
+
+    public function uploadAction(Request $request, $id) {
+        $jwt_auth = $this->get("app.jwt_auth");
+        $hash = $request->get('authorization', null);
+        $check = $jwt_auth->checkToken($hash);
+
+        if ($check == true) {
+            $identity = $jwt_auth->checkToken($hash, true);
+
+            $video_id = $id;
+            $em = $this->getDoctrine()->getManager();
+            $video = $em->getRepository("BackendBundle:Video")->findOneBy(
+                    array(
+                        "id" => $video_id,
+            ));
+
+            if ($video_id != null && isset($identity->sub) && $identity->sub == $video->getUser()->getId()) {
+
+                $file = $request->files->get('image', null);
+                $file_video = $request->files->get('video', null);
+
+                if ($file != null && !empty($file)) {
+                    $ext = $file->guessExtension();
+                    if ($ext == "jpeg" || $ext == "jpg" || $ext == "png" || $ext == "gif") {
+                        $file_name = time() . "." . $ext;
+                        $path_of_file = "uploads/video_images/video_" . $video_id;
+                        $file->move($path_of_file, $file_name);
+                        $video->setImage($file_name);
+
+                        $em->persist($video);
+                        $em->flush();
+                        $data = array(
+                            "status" => "success",
+                            "code" => 200,
+                            "msg" => "Image file for video uploaded"
+                        );
+                    } else {
+                        $data = array(
+                            "status" => "error",
+                            "code" => 400,
+                            "msg" => "Video image file extension error"
+                        );
+                    }
+                } else {
+                    if ($file_video != null && !empty($file_video)) {
+                        $ext = $file_video->guessExtension();
+                        if ($ext == "mp4" || $ext == "avi") {
+                            $file_name = time() . "." . $ext;
+                            $path_of_file = "uploads/video_files/video_" . $video_id;
+                            $file_video->move($path_of_file, $file_name);
+                            $video->setVideoPath($file_name);
+                            $em->persist($video);
+                            $em->flush();
+                            $data = array(
+                                "status" => "success",
+                                "code" => 200,
+                                "msg" => "Video file uploaded"
+                            );
+                        } else {
+                            $data = array(
+                                "status" => "error",
+                                "code" => 400,
+                                "msg" => "Video file extension error"
+                            );
+                        }
+                    }
+                }
+            } else {
+                $data = array(
+                    "status" => "error",
+                    "code" => 400,
+                    "msg" => "Video uploaded error, not owner"
                 );
             }
         } else {
