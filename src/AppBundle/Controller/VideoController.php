@@ -270,6 +270,20 @@ class VideoController extends Controller {
         );
         return $this->json($data);
     }
+    
+    public function lastsVideosAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $dql = "SELECT v FROM BackendBundle:Video v ORDER BY v.createdAt DESC";
+
+        $query = $em->createQuery($dql)->setMaxResults(5);
+        $videos = $query->getResult();
+        
+          $data = array(
+            "status" => "success",
+            "data" => $videos
+        );
+         return $this->json($data);
+    }
 
     public function pruebasAction() {
         echo "Hola controlador video";
