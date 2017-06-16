@@ -9,16 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const router_1 = require("@angular/router");
-let AppComponent = class AppComponent {
+let DefaultComponent = class DefaultComponent {
 };
-AppComponent = __decorate([
+DefaultComponent = __decorate([
     core_1.Component({
-        selector: 'my-app',
-        templateUrl: 'app/view/layout.html',
-        directives: [router_1.ROUTER_DIRECTIVES]
+        selector: 'default',
+        template: '<h1>Componente por defecto de login</h1>'
     }), 
     __metadata('design:paramtypes', [])
-], AppComponent);
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+], DefaultComponent);
+exports.DefaultComponent = DefaultComponent;
+//# sourceMappingURL=default.component.js.map
