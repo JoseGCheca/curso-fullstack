@@ -9,14 +9,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
+const router_1 = require('@angular/router');
+const login_service_1 = require('../services/login.service');
+const user_1 = require('../model/user');
 let RegisterComponent = class RegisterComponent {
+    constructor(_loginService, _route, _router) {
+        this._loginService = _loginService;
+        this._route = _route;
+        this._router = _router;
+        this.titulo = "Registro";
+    }
+    ngOnInit() {
+        this.user = new user_1.User(1, "user", "", "", "", "", "");
+    }
+    onSubmit() {
+        console.log(this.user);
+        this._loginService.register(this.user).subscribe(response => {
+            this.status = response.status;
+            if (this.status != "success") {
+                this.status = "error";
+            }
+        }, error => {
+            this.errorMessage = error;
+            if (this.errorMessage != null) {
+                console.log(this.errorMessage);
+                alert("Error en la petición");
+            }
+        });
+    }
 };
 RegisterComponent = __decorate([
     core_1.Component({
         selector: 'register',
-        template: '<h1>Formulario de registro</h1>'
+        templateUrl: 'app/view/register.html',
+        directives: [router_1.ROUTER_DIRECTIVES],
+        providers: [login_service_1.LoginService]
     }), 
-    __metadata('design:paramtypes', [])
+    __metadata('design:paramtypes', [login_service_1.LoginService, router_1.ActivatedRoute, router_1.Router])
 ], RegisterComponent);
 exports.RegisterComponent = RegisterComponent;
 //# sourceMappingURL=register.component.js.map

@@ -16,6 +16,7 @@ class JwtAuth {
 
     public function signup($email, $password, $getHash = NULL) {
         $key = $this->key;
+        $signup = false;
 
         $user = $this->manager->getRepository("BackendBundle:User")->findOneBy(
                 array(
@@ -42,7 +43,7 @@ class JwtAuth {
             $jwt = JWT::encode($token, $key, 'HS256');
             $decode = JWT::decode($jwt, $key, array('HS256'));
 
-            if ($getHash != null) {
+            if ($getHash != null || $getHash == "false") {
                 return $jwt;
             } else {
                 return $decode;
@@ -55,7 +56,7 @@ class JwtAuth {
 
     public function checkToken($jwt, $getIdentity = false) {
 
-        
+
         $key = $this->key;
         $auth = false;
 
@@ -66,20 +67,19 @@ class JwtAuth {
         } catch (\DomainException $e) {
             $auth = false;
         }
-        
-        if(isset($decoded->sub)){
+
+        if (isset($decoded->sub)) {
             $auth = true;
-        }else{
+        } else {
             $auth = false;
         }
-        
-        if($getIdentity == true){
+
+        if ($getIdentity == true) {
             return $decoded;
-        }
-        else {
+        } else {
             return $auth;
         }
-      
+
         return $response;
     }
 

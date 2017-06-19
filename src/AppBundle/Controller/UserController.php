@@ -30,10 +30,7 @@ class UserController extends Controller {
             $emailConstraint = new Assert\Email();
             $emailConstraint->message = "This email is not valid !!";
             $validate_email = $this->get("validator")->validate($email, $emailConstraint);
-            var_dump($email);
-            var_dump($password);
-            var_dump($surname);
-            var_dump($name);
+         
             if (count($validate_email) == 0 && $email != null && $password != null && strlen(trim($name)) > 0 && strlen(trim($surname)) > 0) {
                 $user = new User();
                 $user->setCreatedAt($createdAt);
@@ -107,10 +104,7 @@ class UserController extends Controller {
                 $emailConstraint = new Assert\Email();
                 $emailConstraint->message = "This email is not valid !!";
                 $validate_email = $this->get("validator")->validate($email, $emailConstraint);
-                var_dump($email);
-                var_dump($password);
-                var_dump($surname);
-                var_dump($name);
+               
                 if (count($validate_email) == 0 && $email != null && strlen(trim($name)) > 0 && strlen(trim($surname)) > 0) {
 
                     $user->setCreatedAt($createdAt);

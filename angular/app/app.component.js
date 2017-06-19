@@ -10,15 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const router_1 = require("@angular/router");
+const login_service_1 = require('./services/login.service');
 let AppComponent = class AppComponent {
+    constructor(_loginService) {
+        this._loginService = _loginService;
+    }
+    ngOnInit() {
+        this.identity = this._loginService.getIdentity();
+        this.token = this._loginService.getToken();
+    }
 };
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
         templateUrl: 'app/view/layout.html',
-        directives: [router_1.ROUTER_DIRECTIVES]
+        directives: [router_1.ROUTER_DIRECTIVES],
+        providers: [login_service_1.LoginService]
     }), 
-    __metadata('design:paramtypes', [])
+    __metadata('design:paramtypes', [login_service_1.LoginService])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

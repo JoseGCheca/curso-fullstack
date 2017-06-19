@@ -9,14 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
+const router_1 = require('@angular/router');
+const login_service_1 = require('../services/login.service');
 let DefaultComponent = class DefaultComponent {
+    constructor(_loginService) {
+        this._loginService = _loginService;
+        this.titulo = "Portada";
+    }
+    ngOnInit() {
+        this.identity = this._loginService.getIdentity();
+    }
 };
 DefaultComponent = __decorate([
     core_1.Component({
         selector: 'default',
-        template: '<h1>Componente por defecto de login</h1>'
+        templateUrl: 'app/view/default.html',
+        directives: [router_1.ROUTER_DIRECTIVES],
+        providers: [login_service_1.LoginService]
     }), 
-    __metadata('design:paramtypes', [])
+    __metadata('design:paramtypes', [login_service_1.LoginService])
 ], DefaultComponent);
 exports.DefaultComponent = DefaultComponent;
 //# sourceMappingURL=default.component.js.map
