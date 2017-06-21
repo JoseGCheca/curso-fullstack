@@ -53,7 +53,7 @@ class CommentController extends Controller {
                     $em->flush();
 
                     $data = array(
-                        "status" => "succes",
+                        "status" => "success",
                         "code" => 200,
                         "msg" => "Comment created success"
                     );

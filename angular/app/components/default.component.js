@@ -18,6 +18,7 @@ let DefaultComponent = class DefaultComponent {
     }
     ngOnInit() {
         this.identity = this._loginService.getIdentity();
+        console.log(this.identity);
     }
 };
 DefaultComponent = __decorate([

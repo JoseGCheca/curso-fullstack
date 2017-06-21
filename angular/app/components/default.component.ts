@@ -18,6 +18,6 @@ export class DefaultComponent {
     ngOnInit() {
 
         this.identity = this._loginService.getIdentity();
-    
+        console.log(this.identity);
     }
 }

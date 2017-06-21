@@ -1,0 +1,15 @@
+<div class="loader" *ngIf="loading=='show'">
+    <img src="assets/images/ajax-gray.gif">
+</div>
+<div class="col-md-12 " *ngIf="video ">
+    <hr/>
+    <h3>{{video.tittle}}</h3>
+    <hr/>
+
+    <div class="col-md-8">
+        <video controls id="video-player">
+            <source src="http://localhost/curso-fullstack/web/uploads/video_files/video_file_{{video.id}}/{{video.videoPath}}" >
+            Tu navegador no es compatible con HTML5
+        </video>
+    </div>
+</div>

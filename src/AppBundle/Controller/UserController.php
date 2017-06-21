@@ -30,7 +30,7 @@ class UserController extends Controller {
             $emailConstraint = new Assert\Email();
             $emailConstraint->message = "This email is not valid !!";
             $validate_email = $this->get("validator")->validate($email, $emailConstraint);
-         
+
             if (count($validate_email) == 0 && $email != null && $password != null && strlen(trim($name)) > 0 && strlen(trim($surname)) > 0) {
                 $user = new User();
                 $user->setCreatedAt($createdAt);
@@ -104,17 +104,17 @@ class UserController extends Controller {
                 $emailConstraint = new Assert\Email();
                 $emailConstraint->message = "This email is not valid !!";
                 $validate_email = $this->get("validator")->validate($email, $emailConstraint);
-               
+
                 if (count($validate_email) == 0 && $email != null && strlen(trim($name)) > 0 && strlen(trim($surname)) > 0) {
 
                     $user->setCreatedAt($createdAt);
-                    $user->setImage($image);
+                   // $user->setImage($image);
                     $user->setRole($role);
                     $user->setEmail($email);
                     $user->setName($name);
                     $user->setSurname($surname);
 
-                    if ($password != null) {
+                    if ($password != null && !empty($params->password)) {
                         //Cifrar contraseña
                         $pwd = hash('sha256', $password);
                         $user->setPassword($pwd);
@@ -226,7 +226,7 @@ class UserController extends Controller {
         $total_items_count = $pagination->getTotalItemCount();
 
         if (count($user) == 1) {
-          
+
             $data = array(
                 "status" => "success",
                 "total_items_count" => $total_items_count,

@@ -57,7 +57,7 @@ class VideoController extends Controller {
                                 "createdAt" => $createdAt
                     ));
                     $data = array(
-                        "status" => "succes",
+                        "status" => "success",
                         "code" => 200,
                         "data" => $video
                     );
@@ -128,13 +128,13 @@ class VideoController extends Controller {
 
 
                         $data = array(
-                            "status" => "succes",
+                            "status" => "success",
                             "code" => 200,
                             "msg" => "video updated success"
                         );
                     } else {
                         $data = array(
-                            "status" => "succes",
+                            "status" => "success",
                             "code" => 400,
                             "msg" => "video updated error, you not owner"
                         );
